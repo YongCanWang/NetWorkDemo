@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
     defaultConfig {
         applicationId "network.mapscloud.cn.networkdemo"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,6 +25,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // 权限
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
     api 'com.squareup.okhttp3:mockwebserver:3.11.0'
+
+    implementation 'me.laoyuyu.aria:core:3.8.16'
+    annotationProcessor 'me.laoyuyu.aria:compiler:3.8.16'
+    implementation 'me.laoyuyu.aria:ftp:3.8.16'
+    implementation 'me.laoyuyu.aria:sftp:3.8.16'
+
+    implementation 'com.liulishuo.filedownloader:library:1.7.7'
+
+
 }

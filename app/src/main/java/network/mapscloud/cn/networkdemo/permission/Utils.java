@@ -1,4 +1,4 @@
-package com.mapscloud.themeatlas.utils;
+package network.mapscloud.cn.networkdemo.permission;
 
 import android.Manifest;
 import android.app.Activity;
@@ -46,8 +46,8 @@ public class Utils {
     private static String[] mWritePerms = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
-//            Manifest.permission.READ_PHONE_STATE,
-//            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA};
     public static final int REQUEST_CODE_ASK_WRITE_SD = 1001;
 

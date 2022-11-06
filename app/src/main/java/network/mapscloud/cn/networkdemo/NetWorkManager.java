@@ -30,10 +30,10 @@ public class NetWorkManager {
 
 
 
-    public void getStationDataRequest(final OnCallRequestListenerManager callRequestOnClickListenerManager) {
+    public void getStationDataRequest(final String url ,final OnCallRequestListenerManager callRequestOnClickListenerManager) {
 
 
-        OkHttpClientManager.getIntance().getCall(StationUrl, new OkHttpClientManager.getOnCallRequestListener() {
+        OkHttpClientManager.getIntance().getCall(url, new OkHttpClientManager.getOnCallRequestListener() {
             @Override
             public void getCallResponse(Call call, Response response) {
                 callRequestOnClickListenerManager.OnStationDataResponseListener(call, response);
