@@ -7,7 +7,7 @@
     tools:context="network.mapscloud.cn.networkdemo.MainActivity">
 
    <Button
-       android:id="@+id/bt_okCall"
+       android:onClick="onDownload0"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:text="OKHTTP请求" />
@@ -29,5 +29,11 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:text="下载3" />
+
+   <EditText
+       android:hint="请输入下载url"
+       android:id="@+id/et_url"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"/>
 
 </LinearLayout>

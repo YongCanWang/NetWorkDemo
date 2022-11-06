@@ -2,9 +2,10 @@ package network.mapscloud.cn.networkdemo;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,16 +28,16 @@ import network.mapscloud.cn.networkdemo.permission.Utils;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private final String TAG = MainActivity.this.getClass().getSimpleName();
-    private Button bt_okCall;
-    private final String URL = "http://139.9.112.88:5095/file/download?production_id=6363211fa0b3e30040c11d79&filename=metadata.sfp&dev_key=b91311cebffbe8d82374faa70a4d213b";
-//        private final String URL = "http://139.9.112.88:5095/file/download?production_id=6363211da0b3e30040c11d4a&filename=metadata.sfp&dev_key=b91311cebffbe8d82374faa70a4d213b";
+    private String URL = "http://139.9.112.88:5095/file/download?production_id=63183e99a0b3e3002b14af96&filename=metadata.sfp&dev_key=b91311cebffbe8d82374faa70a4d213b";
+    //        private final String URL = "http://139.9.112.88:5095/file/download?production_id=6363211da0b3e30040c11d4a&filename=metadata.sfp&dev_key=b91311cebffbe8d82374faa70a4d213b";
 //        private final String URL = "https://image.baidu.com/search/down?tn=download&ipn=dwnl&word=download&ie=utf8&fr=result&url=https%3A%2F%2Fgimg2.baidu.com%2Fimage_search%2Fsrc%3Dhttp%253A%252F%252Fbkimg.cdn.bcebos.com%252Fpic%252Fa1ec08fa513d2697f4f8454358fbb2fb4316d881%26refer%3Dhttp%253A%252F%252Fbkimg.cdn.bcebos.com%26app%3D2002%26size%3Df9999%2C10000%26q%3Da80%26n%3D0%26g%3D0n%26fmt%3Dauto%3Fsec%3D1670320565%26t%3D2b0b0fea69790676f387c4f0c587c320&thumburl=https%3A%2F%2Fimg0.baidu.com%2Fit%2Fu%3D1146686996%2C3167273813%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D500%26h%3D789";
     private final String PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
-            "/mapplus/mapdatabase/mapproduct_meta/atlas/6363211fa0b3e30040c11d79";
+            "/mapplus/mapdatabase/mapproduct_meta/atlas/63183e99a0b3e3002b14af96";
     private final String NAME = "/metadata.sfp";
+    private EditText etUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +46,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Utils.checkPermissions(this);
         initDownload();
         initView();
-        setViewOnClickListener();
     }
 
     private void initDownload() {
         Aria.download(this).register();
+    }
 
+    public void onDownload0(View view) {
+        okhttpDownload();
+    }
+
+    private void okhttpDownload() {
+        checkUrlPath();
+        NetWorkManager.getIntance().getStationDataRequest(URL, new OnCallRequestListenerManager() {
+            @Override
+            public void OnStationDataResponseListener(Call call, Response response) {
+                Log.e("tomcan", "请求成功:" + response.body().contentLength());
+                InputStream inputStream = response.body().byteStream();
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+                BufferedOutputStream bufferedOutputStream = null;
+                long lenL = 0;
+                try {
+//                                    File file = new File(info.fileSaveDirPath);
+//                                    if (!file.exists()) file.mkdirs();
+                    File file1 = new File(PATH + NAME);
+                    bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file1));
+                    byte[] buf = new byte[1024 * 2];
+                    Integer len = 0;
+
+                    while ((len = bufferedInputStream.read(buf)) != -1) {
+                        lenL = lenL + len;
+                        bufferedOutputStream.write(buf, 0, len);
+//                        bufferedOutputStream.write(buf);
+                        bufferedOutputStream.flush();
+                    }
+                } catch (Exception e) {
+                    Log.e("tomcan", "地图集sfp写入本地失败了:" + lenL + "-" + e.toString());
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (bufferedOutputStream != null)
+                            bufferedOutputStream.close();
+                        if (bufferedInputStream != null)
+                            bufferedInputStream.close();
+                        Log.e("tomcan", "IO流关闭:" + lenL);
+                    } catch (IOException e) {
+                        Log.e("tomcan", "IO流关闭错误:" + e);
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void OnStationDataFailureListener(Call call, IOException e) {
+//                        Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+                Log.e(TAG, "请求失败:" + e.toString());
+            }
+        });
     }
 
     public void onDownload1(View view) {
-        File file = new File(PATH);
-        if (!file.exists())file.mkdir();
+        checkUrlPath();
         HttpOption httpOption = new HttpOption();
         HashMap<String, String> stringStringHashMap = new HashMap<>();
 //        stringStringHashMap.put("Accept", "image/gif, image/jpeg, " +
@@ -84,9 +135,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .create();   //启动下载
     }
 
-    public void onDownload2(View view) {
+    private void checkUrlPath() {
+        Editable text = etUrl.getText();
+        if (text != null) {
+            String trim = text.toString().trim();
+            if (trim != null && trim.length() >= 7) {
+                URL = trim;
+            }
+        }
         File file = new File(PATH);
-        if (!file.exists())file.mkdir();
+        if (!file.exists()) file.mkdir();
+    }
+
+    public void onDownload2(View view) {
+        checkUrlPath();
         FileDownloader.getImpl().create(URL)
                 .setPath(PATH + NAME)
 //                .addHeader("Accept", "image/gif, image/jpeg, " +
@@ -157,63 +219,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void setViewOnClickListener() {
-        bt_okCall.setOnClickListener(this);
-    }
-
-
     private void initView() {
-        bt_okCall = (Button) findViewById(R.id.bt_okCall);
+        etUrl = findViewById(R.id.et_url);
     }
 
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt_okCall:
-                NetWorkManager.getIntance().getStationDataRequest(URL, new OnCallRequestListenerManager() {
-                    @Override
-                    public void OnStationDataResponseListener(Call call, Response response) {
-                        Log.e("tomcan", "请求成功:" + response.body().contentLength());
-                        InputStream inputStream = response.body().byteStream();
-                        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-                        BufferedOutputStream bufferedOutputStream = null;
-                        try {
-//                                    File file = new File(info.fileSaveDirPath);
-//                                    if (!file.exists()) file.mkdirs();
-                            File file1 = new File(PATH);
-                            bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file1));
-                            byte[] buf = new byte[1024 * 2];
-                            int len = 0;
-                            while ((len = bufferedInputStream.read(buf)) != -1) {
-                                bufferedOutputStream.write(buf, 0, len);
-//                                        bufferedOutputStream.write(buf);
-                                bufferedOutputStream.flush();
-                            }
-                        } catch (Exception e) {
-                            Log.e("tomcan", "地图集sfp写入本地失败了:");
-                            e.printStackTrace();
-                        } finally {
-                            try {
-                                if (bufferedOutputStream != null)
-                                    bufferedOutputStream.close();
-                                if (bufferedInputStream != null)
-                                    bufferedInputStream.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void OnStationDataFailureListener(Call call, IOException e) {
-//                        Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG).show();
-                        Log.e(TAG, "请求失败:" + e.toString());
-                    }
-                });
-                break;
-        }
-    }
 
     @Download.onNoSupportBreakPoint
     public void onNoSupportBreakPoint(com.arialyy.aria.core.task.DownloadTask task) {
