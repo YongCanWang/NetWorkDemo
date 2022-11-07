@@ -1,4 +1,4 @@
-package network.mapscloud.cn.networkdemo;
+package com.mapscloud.netlibrary.net;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -75,9 +75,7 @@ public class OkHttpClientManager {
 
 
     public void setOnCallRequestListener(getOnCallRequestListener getOnCallRequestListener) {
-
         this.getOnCallRequestListener = getOnCallRequestListener;
-
     }
 
 }

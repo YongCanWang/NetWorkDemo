@@ -1,4 +1,4 @@
-package network.mapscloud.cn.networkdemo;
+package com.mapscloud.netlibrary.net;
 
 import java.io.IOException;
 
@@ -10,9 +10,7 @@ import okhttp3.Response;
  */
 
 public interface OnCallRequestListenerManager {
-
-
     void OnStationDataResponseListener(Call call, Response response);
-    void OnStationDataFailureListener(Call call, IOException e);
 
+    void OnStationDataFailureListener(Call call, IOException e);
 }
