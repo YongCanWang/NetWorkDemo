@@ -1,6 +1,6 @@
 package network.mapscloud.cn.networkdemo;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends Activity implements View.OnClickListener{
 
     private final String TAG = MainActivity.this.getClass().getSimpleName();
     private Button bt_okCall;
