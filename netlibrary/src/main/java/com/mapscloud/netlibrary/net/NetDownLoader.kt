@@ -1,5 +1,6 @@
 package com.mapscloud.netlibrary.net
 
+import android.os.Environment
 import android.os.Handler
 import android.util.Log
 import okhttp3.Call
@@ -12,10 +13,17 @@ import java.io.*
  * @date:2022/11/7 9:42
  */
 class NetDownLoader : NetDownLoaderMate {
+    private var file1: File? = null
+    private var file2: File? = null
+    private var file3: File? = null
+    private var file4: File? = null
+    private var file5: File? = null
+    private var file6: File? = null
+    private var file7: File? = null
+
     private constructor()
 
-
-     companion object {
+    companion object {
         private var instance = NetDownLoader()
         fun getInstance(): NetDownLoader {
             if (instance == null) instance = NetDownLoader()
@@ -74,7 +82,22 @@ class NetDownLoader : NetDownLoaderMate {
     }
 
     private fun checkPath(path: String) {
+        val absolutePath = Environment.getExternalStorageDirectory().absolutePath
+        if (file1 == null) file1 = File("$absolutePath/mapplus")
+        if ((file1?.exists()) == false) file1?.mkdirs()
+        if (file2 == null) file2 = File(file1?.absolutePath + "/mapdatabase")
+        if (file2?.exists() == false) file2?.mkdirs()
+        if (file3 == null) file3 = File(file2?.absolutePath + "/mapproduct_meta")
+        if (file3?.exists() == false) file3?.mkdirs()
+        if (file4 == null) file4 = File(file2?.absolutePath + "/mapproduct_tile")
+        if (file4?.exists() == false) file4?.mkdirs()
+        if (file5 == null) file5 = File(file3?.absolutePath + "/atlas")
+        if (file5?.exists() == false) file5?.mkdirs()
+        if (file6 == null) file6 = File(file3?.absolutePath + "/map_group")
+        if (file6?.exists() == false) file6?.mkdirs()
+        if (file7 == null) file7 = File(file3?.absolutePath + "/map_twin")
+        if (file7?.exists() == false) file7?.mkdirs()
         val file = File(path)
-        if (!file.exists()) file.mkdir()
+        if (!file.exists()) file.mkdirs()
     }
 }

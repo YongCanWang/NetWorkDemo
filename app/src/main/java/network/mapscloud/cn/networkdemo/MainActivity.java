@@ -16,8 +16,9 @@ import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.mapscloud.netlibrary.net.NetDownLoader;
-import com.mapscloud.netlibrary.net.OnCallRequestListenerManager;
 import com.mapscloud.netlibrary.net.NetWorkManager;
+import com.mapscloud.netlibrary.net.OnCallRequestListenerManager;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -25,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+
 import network.mapscloud.cn.networkdemo.permission.Utils;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -39,6 +41,13 @@ public class MainActivity extends Activity {
             "/mapplus/mapdatabase/mapproduct_meta/atlas/6363211fa0b3e30040c11d79";
     private final String NAME = "/metadata.sfp";
     private EditText etUrl;
+    private File file1;
+    private File file2;
+    private File file3;
+    private File file4;
+    private File file5;
+    private File file6;
+    private File file7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,8 +153,33 @@ public class MainActivity extends Activity {
                 URL = trim;
             }
         }
+
+        String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        if (file1 == null) file1 = new File(absolutePath + "/mapplus");
+        if (!file1.exists()) file1.mkdirs();
+        if (file2 == null) file2 = new File(file1.getAbsolutePath() + "/mapdatabase");
+        if (!file2.exists()) file2.mkdirs();
+        if (file3 == null) file3 = new File(file2.getAbsolutePath() + "/mapproduct_meta");
+        if (!file3.exists()) file3.mkdirs();
+        if (file4 == null) file4 = new File(file2.getAbsolutePath() + "/mapproduct_tile");
+        if (!file4.exists()) file4.mkdirs();
+        if (file5 == null) file5 = new File(file3.getAbsolutePath() + "/atlas");
+        if (!file5.exists()) file5.mkdirs();
+        if (file6 == null) file6 = new File(file3.getAbsolutePath() + "/map_group");
+        if (!file6.exists()) file6.mkdirs();
+        if (file7 == null) file7 = new File(file3.getAbsolutePath() + "/map_twin");
+        if (!file7.exists()) file7.mkdirs();
+
+
         File file = new File(PATH);
-        if (!file.exists()) file.mkdir();
+        if (!file.exists()) {
+            try {
+                file.mkdirs();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("tomcan", "创建文件失败：" + e.toString() + "-" + PATH);
+            }
+        }
     }
 
     public void onDownload2(View view) {
