@@ -51,7 +51,7 @@ class NetDownLoader : NetDownLoaderMate {
 //                                    if (!file.exists()) file.mkdirs();
                         val file1 = File("$path/$name")
                         bufferedOutputStream = BufferedOutputStream(FileOutputStream(file1))
-                        val buf = ByteArray(1024 * 2)
+                        val buf = ByteArray(1048576 * 2)
                         var len = 0
                         while ((bufferedInputStream.read(buf).also { len = it }) != -1) {
                             lenL += len
