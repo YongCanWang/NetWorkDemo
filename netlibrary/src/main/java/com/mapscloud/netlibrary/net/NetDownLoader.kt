@@ -51,16 +51,27 @@ class NetDownLoader : NetDownLoaderMate {
 //                                    if (!file.exists()) file.mkdirs();
                         val file1 = File("$path/$name")
                         bufferedOutputStream = BufferedOutputStream(FileOutputStream(file1))
-                        val buf = ByteArray(1048576 * 2)
+                        val buf = ByteArray(5242880)
                         var len = 0
-                        while ((bufferedInputStream.read(buf).also { len = it }) != -1) {
+                        while ((bufferedInputStream.read(buf, 0, buf.size)
+                                .also { len = it }) != -1
+                        ) {
                             lenL += len
                             bufferedOutputStream.write(buf, 0, len)
-                            //                        bufferedOutputStream.write(buf);
                             bufferedOutputStream.flush()
+                            Log.i("write", "正在写入:" + lenL + "个字节")
                         }
+                        Log.e("tomcan", "文件写入本地成功:$lenL")
+                        val message = handler.obtainMessage()
+                        message.what = 10001
+                        message.obj = url
+                        handler?.sendMessage(message)
                     } catch (e: Exception) {
-                        Log.e("tomcan", "地图集sfp写入本地失败了:$lenL-$e")
+                        Log.e("tomcan", "文件写入本地失败了:$lenL-$e")
+                        val message = handler.obtainMessage()
+                        message.what = 10002
+                        message.obj = url
+                        handler?.sendMessage(message)
                         e.printStackTrace()
                     } finally {
                         try {
@@ -77,6 +88,10 @@ class NetDownLoader : NetDownLoaderMate {
                 override fun OnStationDataFailureListener(call: Call, e: IOException) {
 //                        Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG).show();
                     Log.e("tomcan", "请求失败:$e")
+                    val message = handler.obtainMessage()
+                    message.what = 10002
+                    message.obj = url
+                    handler?.sendMessage(message)
                 }
             })
     }

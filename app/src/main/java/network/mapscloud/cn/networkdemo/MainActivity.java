@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
     private final String TAG = MainActivity.this.getClass().getSimpleName();
     //    private String URL = "http://139.9.112.88:5095/file/download?production_id=6363211fa0b3e30040c11d79&filename=metadata.sfp&dev_key=b91311cebffbe8d82374faa70a4d213b";
 //    private String URL = "http://139.9.112.88:5095/file/download?production_id=6358a911a0b3e3001de49aff&filename=20001231.tif&dev_key=b91311cebffbe8d82374faa70a4d213b";
-    private String URL = "http://139.9.112.88:5095/file/download?production_id=6358a911a0b3e3001de49aff&filename=metadata.sfp&dev_key=b91311cebffbe8d82374faa70a4d213b";
+    private String URL = "http://139.9.112.88:5095/file/download?production_id=631850dba0b3e3003831186f&filename=metadata.sfp&dev_key=b91311cebffbe8d82374faa70a4d213b";
 //    private String URL = "http://139.9.112.88:5095/file/download?production_id=6358a911a0b3e3001de49aff&filename=Apifox-windows-latest.zip&dev_key=b91311cebffbe8d82374faa70a4d213b";
 //    private String URL = "http://139.9.112.88:5095/file/download?production_id=6358a911a0b3e3001de49aff&filename=78.9M.apk&dev_key=b91311cebffbe8d82374faa70a4d213b";
 //    private String URL = "http://139.9.112.88:5095/file/download?production_id=63352bc8a0b3e3001d656d2a&filename=metadata.sfp&dev_key=b91311cebffbe8d82374faa70a4d213b";
